@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qtTwain", "qtTwain.vcxproj", "{DE763F3D-0BD8-359E-9505-AADDB2F92A97}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE763F3D-0BD8-359E-9505-AADDB2F92A97}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DE763F3D-0BD8-359E-9505-AADDB2F92A97}.Debug|Win32.Build.0 = Debug|Win32
+		{DE763F3D-0BD8-359E-9505-AADDB2F92A97}.Release|Win32.ActiveCfg = Release|Win32
+		{DE763F3D-0BD8-359E-9505-AADDB2F92A97}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
