@@ -100,6 +100,7 @@ bool QTwain::isValidDriver() const
 // internal, implementation of CTwain function
 void QTwain::CopyImage(HANDLE hBitmap, TW_IMAGEINFO& info)
 {
+    qDebug() << __FUNCTION__ << endl;
 	CDIB* dib = new CDIB();
 	CDIB temp_dib;
 	temp_dib.CreateFromHandle(hBitmap, info.BitsPerPixel);

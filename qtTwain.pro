@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 TEMPLATE = app
-TARGET = qtTwain
+TARGET = qtscantest
 DESTDIR = ./Win32/Debug
 QT += core gui  winextras
 CONFIG += debug qaxcontainer

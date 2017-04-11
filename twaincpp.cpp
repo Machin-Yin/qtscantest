@@ -491,24 +491,25 @@ numberof images that you an handle concurrently
 */
 bool CTwain::Acquire(int numImages)
 {
-	if(DSOpen() || OpenSource())
-	{
-	qWarning("1!");
-		if(SetImageCount(numImages))
-		{
-		qWarning("2!");
-			if(EnableSource())
-			{
-			qWarning("3!");
-			//ReleaseTwain();
-			//TW_IMAGEINFO info;
-			//GetImageInfo(info);
-			// GetImage(info);
-				return true;
-			}
-		}
-	}
-	return false;
+    if(DSOpen() || OpenSource())
+    {
+        qWarning("1!");
+        if(SetImageCount(numImages))
+        {
+            qWarning("2!");
+            if(EnableSource(false))
+            {
+                qWarning("3!");
+//                ReleaseTwain();
+                TW_IMAGEINFO info;
+                qDebug() << "image info.PixelType" << info.PixelType << endl;
+                GetImageInfo(info);
+                GetImage(info);
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 /*
@@ -554,9 +555,15 @@ Gets Imageinfo for an image which is about to be transferred.
 */
 bool CTwain::GetImageInfo(TW_IMAGEINFO& info)
 {
+    qDebug() << __FUNCTION__ << endl;
 	if(SourceEnabled())
 	{
-		return CallTwainProc(&m_AppId,&m_Source,DG_IMAGE,DAT_IMAGEINFO,MSG_GET,(TW_MEMREF)&info);
+        bool imageinfo;
+        qDebug() << "PixelType" << info.PixelType << endl;
+
+        imageinfo = CallTwainProc(&m_AppId,&m_Source,DG_IMAGE,DAT_IMAGEINFO,MSG_GET,(TW_MEMREF)&info);
+        qDebug() << "PixelType" << info.PixelType << endl;
+        return imageinfo;
 	}
 	return false;
 }
@@ -616,8 +623,9 @@ Aborts all transfers
 */
 void CTwain::CancelTransfer()
 {
-TW_PENDINGXFERS twPend;
-	CallTwainProc(&m_AppId,&m_Source,DG_CONTROL,DAT_PENDINGXFERS,MSG_RESET,(TW_MEMREF)&twPend);
+    qDebug() << __FUNCTION__ << endl;
+    TW_PENDINGXFERS twPend;
+    CallTwainProc(&m_AppId,&m_Source,DG_CONTROL,DAT_PENDINGXFERS,MSG_RESET,(TW_MEMREF)&twPend);
 }
 
 /*
@@ -625,22 +633,24 @@ Calls TWAIN to actually get the image
 */
 bool CTwain::GetImage(TW_IMAGEINFO& info)
 {
-HANDLE hBitmap;
-	CallTwainProc(&m_AppId,&m_Source,DG_IMAGE,DAT_IMAGENATIVEXFER,MSG_GET,&hBitmap);
-	qWarning("calltwain");
-	switch(m_returnCode)
-	{
-	case TWRC_XFERDONE:
-			CopyImage(hBitmap,info);
-			break;
-	case TWRC_CANCEL:
-			break;
-	case TWRC_FAILURE:
-			CancelTransfer();
-			return false;
+    qDebug() << __FUNCTION__ ;
+    HANDLE hBitmap;
+    CallTwainProc(&m_AppId,&m_Source,DG_IMAGE,DAT_IMAGENATIVEXFER,MSG_GET,&hBitmap);
+    qWarning("calltwain");
+    switch(m_returnCode)
+    {
+        qDebug() << "m_returnCode" << m_returnCode << endl;
+    case TWRC_XFERDONE:
+        CopyImage(hBitmap,info);
+        break;
+    case TWRC_CANCEL:
+        break;
+    case TWRC_FAILURE:
+        CancelTransfer();
+        return false;
 
-	}
-	GlobalFree(hBitmap);
-	return EndTransfer();
+    }
+    GlobalFree(hBitmap);
+    return EndTransfer();
 }
 
